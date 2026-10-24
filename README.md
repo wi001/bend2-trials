@@ -47,3 +47,7 @@ cd ordered_sets/bend && bend PROOF.bend --verdict    # Bend laws
 cd ordered_sets/lean && lake build && lake env lean Check.lean   # Lean laws
 ordered_sets/build.sh && python3 ordered_sets/bench/run.py --D 22 --reps 3 --threads 1 16 18
 ```
+
+## License
+
+MIT. See `LICENSE`.
