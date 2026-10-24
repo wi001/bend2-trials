@@ -2,7 +2,9 @@
 Added by the coordinator for a like-for-like comparison with bend/bench.bend:
 Main.lean, except that each operation gets fresh, unshared deep copies of A
 and B, made outside the timed section (so the operation may reuse their
-memory in place, as Bend's does).
+memory in place, as Bend's does). The copies are made by a @[noinline] IO
+function: written as pure `A.copy` the compiler merged the three copies into
+one, which every operation then shared (found by a review, 25 October 2026).
 -/
 import OrderedSets
 open OrderedSets
@@ -20,6 +22,9 @@ def OrderedSets.Tree.copy : Tree → Tree
   | .leaf => .leaf
   | .node l k p r => .node l.copy k p r.copy
 
+/-- a fresh copy made in IO, so the compiler cannot share one copy between operations -/
+@[noinline] def freshCopy (t : Tree) : IO Tree := pure t.copy
+
 @[noinline] def touch (a b : Tree) : IO Unit := do
   match a, b with
   | .leaf, .leaf => IO.eprintln "both trees empty"
@@ -35,21 +40,24 @@ def main (args : List String) : IO Unit := do
   touch A B
   let t1 ← IO.monoMsNow
   IO.println s!"build_ms {t1 - t0} sizes {A.size} {B.size}"
-  let (a, b) := (A.copy, B.copy)
+  let a ← freshCopy A
+  let b ← freshCopy B
   touch a b
   let t0 ← IO.monoMsNow
   let U := unionGo n a b
   touch U U
   let t1 ← IO.monoMsNow
   IO.println s!"union_ms {t1 - t0} size {U.size} sum {U.sum}"
-  let (a, b) := (A.copy, B.copy)
+  let a ← freshCopy A
+  let b ← freshCopy B
   touch a b
   let t0 ← IO.monoMsNow
   let I := interGo n a b
   touch I I
   let t1 ← IO.monoMsNow
   IO.println s!"inter_ms {t1 - t0} size {I.size} sum {I.sum}"
-  let (a, b) := (A.copy, B.copy)
+  let a ← freshCopy A
+  let b ← freshCopy B
   touch a b
   let t0 ← IO.monoMsNow
   let X := diffGo n a b

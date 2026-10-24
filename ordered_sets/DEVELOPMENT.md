@@ -128,8 +128,8 @@ operation, as in Bend).
 | Bend shared, 18 threads | 993 | 175 | 165 | 186 |
 | Lean, 1 thread | 6,388 | 293 | 270 | 269 |
 | Lean, parallel | 1,178 | 84 | 63 | 194 |
-| Lean fresh, 1 thread | 6,352 | 294 | 271 | 273 |
-| Lean fresh, parallel | 1,164 | 134 | 53 | 164 |
+| Lean "fresh", 1 thread (invalid: shared one copy, see below) | 6,352 | 294 | 271 | 273 |
+| Lean "fresh", parallel (invalid: shared one copy, see below) | 1,164 | 134 | 53 | 164 |
 
 ### The criteria
 
@@ -153,14 +153,9 @@ What each miss points at:
   never frees: with `malloc` the same C union takes 190 ms, so Bend's 428 ms
   is 2.25 times that and Lean's 293 ms 1.5 times. The rest is not attributed
   here.
-- Sharing: keeping the inputs alive, as Lean and C do, costs Bend about 2.1
-  times on union (fresh copies consumed: 440 ms; fresh copies kept alive,
-  `bench_layout.bend`: 920 ms), and the scattered layout of the original trees
-  another 1.2 times (shared originals: 1,100 ms). Lean shows no difference
-  (293 against 294 ms). In the generated code a shared node is opened through
-  `ctr_take` (an atomic load and reference-count updates) and new nodes are
-  allocated instead of reusing the inputs' cells; which of these dominates was
-  not isolated.
+- Sharing: see "Corrections after review" below. Most of the cost of shared
+  inputs is Bend's documented hot-type rule, not sharing as such, and Lean
+  pays a similar ratio for keeping its inputs alive.
 - Parallelism (3): Bend parallelises well relative to its own single thread
   on building (9.7 times) and better than Lean's tasks; union is partly memory
   bound (C's own parallel treap gains 3.8 times). Among verified
@@ -176,3 +171,30 @@ Bend timings are within noise of 2.0.38 (one-thread union 442 ms, 16 threads
 88, 18 threads 73; shared one thread 1,087). Layout against sharing, one
 thread, 3 runs each: fresh copies consumed 438 to 442 ms, fresh copies shared
 907 to 930 ms, originals shared 1,092 to 1,123 ms.
+
+## Corrections after review (25 October 2026)
+
+An independent review agent checked the draft issue about shared trees and
+found two errors, both confirmed:
+
+1. `MainFresh.lean` did not give fresh copies. Lean's compiler merged the
+   three `(A.copy, B.copy)` expressions into one copy per tree (the generated
+   C calls the copy function once per tree), so every operation shared it.
+   With the copies made by a `@[noinline]` IO function (now in
+   `MainFresh.lean`), Lean's one-thread union takes 154–159 ms on consumed
+   inputs against 286–291 ms on shared ones: Lean too pays about 1.9 times for
+   keeping its inputs alive. (Its parallel fresh runs take 192–197 ms against
+   83–86 ms shared; not investigated.)
+2. Most of Bend's shared-input cost is not sharing but its documented hot-type
+   rule: one `+` on a datatype anywhere in a program makes every node of that
+   type count its fields. bendlang/bend#1559 reported this; on 21 October the
+   maintainers kept the rule and documented its cost (#1812, #1813).
+   `bench_mixed.bend` shows it on 2.0.39, one thread: union on unshared,
+   consumed inputs takes 822–829 ms once the type is hot, against 428–460 ms
+   when it is not, and 937–1,003 ms with the inputs actually shared.
+
+Like for like, Bend's one-thread union is about 2.8 times Lean's on consumed
+inputs (430 against 156 ms) and about 3.3 times on shared ones (960 against
+288 ms), further from criterion 2 than the 1.5 times above, which compared
+Bend's consumed inputs with Lean's shared ones. The other criteria are
+unchanged. The draft issue was not filed.

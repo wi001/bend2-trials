@@ -9,7 +9,8 @@ against the same algorithm in C.
 
 - `spec/`: the algorithm, benchmark, fixed-file checksums and the agents' briefs.
 - `bend/`: specification and laws (fixed), the agent's `sets.bend`,
-  `PROOF.bend`, `bench.bend`; `bench_shared.bend` is a coordinator variant.
+  `PROOF.bend`, `bench.bend`; `bench_shared.bend`, `bench_layout.bend` and
+  `bench_mixed.bend` are coordinator variants.
 - `lean/`: specification and `Check.lean` (fixed), the agent's Lake package;
   `MainFresh.lean` is a coordinator variant.
 - `c/`: the same treap in C (one thread and parallel) and sorted arrays.

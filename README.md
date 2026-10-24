@@ -27,13 +27,15 @@ do it within its reduction budget. See `busy_beaver/DEVELOPMENT.md`.
 A pre-registered comparison on the task where Bend should be strongest:
 join-based treap union, intersection and difference, proven to return search
 trees with the right members, running in parallel. Bend's proofs pass and
-check fast, but it misses the other criteria: its union on one thread is 1.5
-times slower than Lean's and 3.1 times slower than the same algorithm in C
-(2.25 times C with `malloc` instead of an arena), keeping its input trees
-alive as Lean and C do costs it a further 2.1 times, it scales 5 to 6 times on
-16 to 18 threads, and its agent used 2.7 times the tokens of the Lean agent.
-In parallel it is the fastest of the verified implementations. Measured on
-Bend 2.0.38 and rechecked on 2.0.39. See `ordered_sets/DEVELOPMENT.md`.
+check fast, but it misses the other criteria: like for like, its union on one
+thread is about 2.8 times slower than Lean's (consumed inputs) to 3.3 times
+(shared inputs), and 2.25 times slower than the same algorithm in C with
+`malloc`; marking the tree type `+` anywhere costs it about 1.9 times (a
+documented Bend rule); it scales 5 to 6 times on 16 to 18 threads; and its
+agent used 2.7 times the tokens of the Lean agent. In parallel it is the
+fastest of the verified implementations. Measured on Bend 2.0.38 and
+rechecked on 2.0.39, with corrections from an independent review. See
+`ordered_sets/DEVELOPMENT.md`.
 
 ## Reproducing
 
