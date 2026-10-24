@@ -137,6 +137,11 @@ faster than Lean, as advertised. On proof by computation, which Busy Beaver
 proofs rely on, it is slower than Coq: on par for BB(2), where fixed costs
 dominate, and far slower or out of budget for heavy runs.
 
+Rerun on Bend 2.0.39 (25 October 2026): the gate passes (2.6 s warm), and the
+native champions and survey are unchanged. Removing the gate `u` from `check2`
+still makes the kernel run out of fuel in `elim_a0.w` while the TypeScript
+checker accepts the file.
+
 ## BB(3): what it would take
 
 - The window decider leaves 74 machines of a tree-normal-form enumeration

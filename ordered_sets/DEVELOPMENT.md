@@ -94,6 +94,9 @@ Design notes from the implementations:
   Because a recursive def cannot branch on a computed value, `join`, `join2`,
   `split` and `op` take a phase argument: one step computes the comparison and
   calls itself with it, rebuilding the node unchanged; the next acts on it.
+  The generated C writes the node back into the same cell and computes the
+  comparison with two machine comparisons, so the extra step allocates
+  nothing.
   `bench.bend` gives every operation fresh, unshared copies of A and B, made
   outside the timed sections, because a shared tree makes every node carry a
   reference count.
@@ -106,8 +109,10 @@ Design notes from the implementations:
   the timings, are what show both run the specified treap.
 
 Coordinator variants for like-for-like conditions: `bend/bench_shared.bend`
-(A and B shared by all three operations, as in Lean and C) and
-`lean/MainFresh.lean` (`bench_fresh`: fresh copies per operation, as in Bend).
+(A and B shared by all three operations, as in Lean and C),
+`bend/bench_layout.bend` (fresh copies, then shared: separates memory layout
+from sharing) and `lean/MainFresh.lean` (`bench_fresh`: fresh copies per
+operation, as in Bend).
 
 ### Times at D = 22 (medians of 3 runs, ms; `bench/results-D22.json`)
 
@@ -143,13 +148,31 @@ What each miss points at:
 - Proofs (5): Bend's proofs are correct and check fast, and the agent got its
   full proof right on the first complete run, but with no automation it wrote
   five times the lines Lean needed.
-- Single-thread speed (2, 4): the rules against branching on computed values
-  and mutual recursion force an extra step and node rebuild at every level of
-  split and join; sharing a structure, the normal case for persistent data,
-  costs another 2.6 times through per-node reference counts.
+- Single-thread speed (2, 4): not the phase pattern, which compiles to an
+  in-place loop step. Part of the gap to C is the C baseline's arena, which
+  never frees: with `malloc` the same C union takes 190 ms, so Bend's 428 ms
+  is 2.25 times that and Lean's 293 ms 1.5 times. The rest is not attributed
+  here.
+- Sharing: keeping the inputs alive, as Lean and C do, costs Bend about 2.1
+  times on union (fresh copies consumed: 440 ms; fresh copies kept alive,
+  `bench_layout.bend`: 920 ms), and the scattered layout of the original trees
+  another 1.2 times (shared originals: 1,100 ms). Lean shows no difference
+  (293 against 294 ms). In the generated code a shared node is opened through
+  `ctr_take` (an atomic load and reference-count updates) and new nodes are
+  allocated instead of reusing the inputs' cells; which of these dominates was
+  not isolated.
 - Parallelism (3): Bend parallelises well relative to its own single thread
   on building (9.7 times) and better than Lean's tasks; union is partly memory
   bound (C's own parallel treap gains 3.8 times). Among verified
   implementations Bend's parallel build is fastest (555 ms against Lean's
   1,178 ms) and its parallel union slightly faster (73 against 84 ms), but
   parallel C is twice as fast again.
+
+### Rerun on Bend 2.0.39 (25 October 2026)
+
+2.0.39 shipped during the evaluation. From a fresh clone of the published
+repository, with 2.0.39 installed beside 2.0.38: the Bend gate passes, and the
+Bend timings are within noise of 2.0.38 (one-thread union 442 ms, 16 threads
+88, 18 threads 73; shared one thread 1,087). Layout against sharing, one
+thread, 3 runs each: fresh copies consumed 438 to 442 ms, fresh copies shared
+907 to 930 ms, originals shared 1,092 to 1,123 ms.

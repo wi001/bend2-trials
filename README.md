@@ -28,15 +28,17 @@ A pre-registered comparison on the task where Bend should be strongest:
 join-based treap union, intersection and difference, proven to return search
 trees with the right members, running in parallel. Bend's proofs pass and
 check fast, but it misses the other criteria: its union on one thread is 1.5
-times slower than Lean's and 3.1 times slower than the same algorithm in C,
-sharing a tree costs a further 2.6 times, it scales 5 to 6 times on 16 to 18
-threads, and its agent used 2.7 times the tokens of the Lean agent. In
-parallel it is the fastest of the verified implementations. See
-`ordered_sets/DEVELOPMENT.md`.
+times slower than Lean's and 3.1 times slower than the same algorithm in C
+(2.25 times C with `malloc` instead of an arena), keeping its input trees
+alive as Lean and C do costs it a further 2.1 times, it scales 5 to 6 times on
+16 to 18 threads, and its agent used 2.7 times the tokens of the Lean agent.
+In parallel it is the fastest of the verified implementations. Measured on
+Bend 2.0.38 and rechecked on 2.0.39. See `ordered_sets/DEVELOPMENT.md`.
 
 ## Reproducing
 
-Requirements: Bend 2.0.38 (`curl -fsSL https://bend-lang.com/install.sh | sh`),
+Requirements: Bend 2.0.38 or later (`curl -fsSL https://bend-lang.com/install.sh | sh`
+installs the latest; results were rechecked on 2.0.39),
 Lean 4.35.0 and Lean 4.34.0 (for Bend's `--verdict` kernel) via elan, a C
 compiler, Python 3. The Coq-BB5 timings used Rocq 9.3.0 and Coq-BB5 commit
 9142e21.

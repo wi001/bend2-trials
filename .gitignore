@@ -8,6 +8,7 @@
 /busy_beaver/survey
 /ordered_sets/bend/bench
 /ordered_sets/bend/bench_shared
+/ordered_sets/bend/bench_layout
 /ordered_sets/c/treap
 /ordered_sets/c/treap_par
 /ordered_sets/c/arrays

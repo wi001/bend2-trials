@@ -29,6 +29,8 @@ def configs(threads):
         out.append((f"Bend, {t} thread{'s' if t > 1 else ''}", [bend, "{D}", "+RTS", "--threads", str(t), "-RTS"]))
     for t in threads:
         out.append((f"Bend shared, {t} thread{'s' if t > 1 else ''}", [shared, "{D}", "+RTS", "--threads", str(t), "-RTS"]))
+    layout = ROOT / "bend" / "bench_layout"
+    out.append(("Bend copied then shared, 1 thread", [layout, "{D}", "+RTS", "--threads", "1", "-RTS"]))
     # the Lean benchmark's second argument is its Task.spawn depth budget; 0 runs on one thread
     out.append(("Lean, 1 thread", [lean / "bench", "{D}", "0"]))
     out.append(("Lean, parallel (Task depth 6)", [lean / "bench", "{D}"]))
