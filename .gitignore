@@ -1,0 +1,17 @@
+# other work in this folder, not part of this repository
+/bend_life/
+/optimization_day/
+/venting-reports/
+
+# built binaries and build output
+/busy_beaver/bb
+/busy_beaver/survey
+/ordered_sets/bend/bench
+/ordered_sets/bend/bench_shared
+/ordered_sets/c/treap
+/ordered_sets/c/treap_par
+/ordered_sets/c/arrays
+/ordered_sets/lean/.lake/
+*.bendtt
+__pycache__/
+.DS_Store

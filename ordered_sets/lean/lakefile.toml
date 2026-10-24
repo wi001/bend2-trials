@@ -1,0 +1,15 @@
+name = "ordered_sets"
+version = "0.1.0"
+defaultTargets = ["OrderedSets", "bench"]
+
+[[lean_lib]]
+name = "OrderedSets"
+
+[[lean_exe]]
+name = "bench"
+root = "Main"
+
+# added by the coordinator: Main.lean with fresh input copies per operation
+[[lean_exe]]
+name = "bench_fresh"
+root = "MainFresh"

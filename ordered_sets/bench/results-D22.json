@@ -1,0 +1,357 @@
+{
+  "D": 22,
+  "reps": 3,
+  "results": {
+    "C treap, 1 thread": {
+      "ms": {
+        "build": 3326.9,
+        "union": 136.4,
+        "inter": 121.3,
+        "diff": 121.3
+      },
+      "matches_reference": true,
+      "answers": {
+        "build": [
+          3304811,
+          3303094
+        ],
+        "union": [
+          5308434,
+          22259684013108
+        ],
+        "inter": [
+          1299471,
+          5446574958600
+        ],
+        "diff": [
+          2005340,
+          8407855616662
+        ]
+      }
+    },
+    "C sorted arrays, 1 thread": {
+      "ms": {
+        "build": 55.6,
+        "union": 18.3,
+        "inter": 16.9,
+        "diff": 14.9
+      },
+      "matches_reference": true,
+      "answers": {
+        "build": [
+          3304811,
+          3303094
+        ],
+        "union": [
+          5308434,
+          22259684013108
+        ],
+        "inter": [
+          1299471,
+          5446574958600
+        ],
+        "diff": [
+          2005340,
+          8407855616662
+        ]
+      }
+    },
+    "C treap, parallel": {
+      "ms": {
+        "build": 487.7,
+        "union": 35.8,
+        "inter": 32.7,
+        "diff": 32.9
+      },
+      "matches_reference": true,
+      "answers": {
+        "build": [
+          3304811,
+          3303094
+        ],
+        "union": [
+          5308434,
+          22259684013108
+        ],
+        "inter": [
+          1299471,
+          5446574958600
+        ],
+        "diff": [
+          2005340,
+          8407855616662
+        ]
+      }
+    },
+    "Bend, 1 thread": {
+      "ms": {
+        "build": 5760.0,
+        "union": 428.0,
+        "inter": 476.0,
+        "diff": 486.0
+      },
+      "matches_reference": true,
+      "answers": {
+        "build": [
+          3304811,
+          3303094
+        ],
+        "union": [
+          5308434,
+          22259684013108
+        ],
+        "inter": [
+          1299471,
+          5446574958600
+        ],
+        "diff": [
+          2005340,
+          8407855616662
+        ]
+      }
+    },
+    "Bend, 16 threads": {
+      "ms": {
+        "build": 596.0,
+        "union": 86.0,
+        "inter": 95.0,
+        "diff": 96.0
+      },
+      "matches_reference": true,
+      "answers": {
+        "build": [
+          3304811,
+          3303094
+        ],
+        "union": [
+          5308434,
+          22259684013108
+        ],
+        "inter": [
+          1299471,
+          5446574958600
+        ],
+        "diff": [
+          2005340,
+          8407855616662
+        ]
+      }
+    },
+    "Bend, 18 threads": {
+      "ms": {
+        "build": 555.0,
+        "union": 73.0,
+        "inter": 79.0,
+        "diff": 80.0
+      },
+      "matches_reference": true,
+      "answers": {
+        "build": [
+          3304811,
+          3303094
+        ],
+        "union": [
+          5308434,
+          22259684013108
+        ],
+        "inter": [
+          1299471,
+          5446574958600
+        ],
+        "diff": [
+          2005340,
+          8407855616662
+        ]
+      }
+    },
+    "Bend shared, 1 thread": {
+      "ms": {
+        "build": 9203.0,
+        "union": 1071.0,
+        "inter": 995.0,
+        "diff": 1187.0
+      },
+      "matches_reference": true,
+      "answers": {
+        "build": [
+          3304811,
+          3303094
+        ],
+        "union": [
+          5308434,
+          22259684013108
+        ],
+        "inter": [
+          1299471,
+          5446574958600
+        ],
+        "diff": [
+          2005340,
+          8407855616662
+        ]
+      }
+    },
+    "Bend shared, 16 threads": {
+      "ms": {
+        "build": 1042.0,
+        "union": 201.0,
+        "inter": 190.0,
+        "diff": 221.0
+      },
+      "matches_reference": true,
+      "answers": {
+        "build": [
+          3304811,
+          3303094
+        ],
+        "union": [
+          5308434,
+          22259684013108
+        ],
+        "inter": [
+          1299471,
+          5446574958600
+        ],
+        "diff": [
+          2005340,
+          8407855616662
+        ]
+      }
+    },
+    "Bend shared, 18 threads": {
+      "ms": {
+        "build": 993.0,
+        "union": 175.0,
+        "inter": 165.0,
+        "diff": 186.0
+      },
+      "matches_reference": true,
+      "answers": {
+        "build": [
+          3304811,
+          3303094
+        ],
+        "union": [
+          5308434,
+          22259684013108
+        ],
+        "inter": [
+          1299471,
+          5446574958600
+        ],
+        "diff": [
+          2005340,
+          8407855616662
+        ]
+      }
+    },
+    "Lean, 1 thread": {
+      "ms": {
+        "build": 6388.0,
+        "union": 293.0,
+        "inter": 270.0,
+        "diff": 269.0
+      },
+      "matches_reference": true,
+      "answers": {
+        "build": [
+          3304811,
+          3303094
+        ],
+        "union": [
+          5308434,
+          22259684013108
+        ],
+        "inter": [
+          1299471,
+          5446574958600
+        ],
+        "diff": [
+          2005340,
+          8407855616662
+        ]
+      }
+    },
+    "Lean, parallel (Task depth 6)": {
+      "ms": {
+        "build": 1178.0,
+        "union": 84.0,
+        "inter": 63.0,
+        "diff": 194.0
+      },
+      "matches_reference": true,
+      "answers": {
+        "build": [
+          3304811,
+          3303094
+        ],
+        "union": [
+          5308434,
+          22259684013108
+        ],
+        "inter": [
+          1299471,
+          5446574958600
+        ],
+        "diff": [
+          2005340,
+          8407855616662
+        ]
+      }
+    },
+    "Lean fresh, 1 thread": {
+      "ms": {
+        "build": 6352.0,
+        "union": 294.0,
+        "inter": 271.0,
+        "diff": 273.0
+      },
+      "matches_reference": true,
+      "answers": {
+        "build": [
+          3304811,
+          3303094
+        ],
+        "union": [
+          5308434,
+          22259684013108
+        ],
+        "inter": [
+          1299471,
+          5446574958600
+        ],
+        "diff": [
+          2005340,
+          8407855616662
+        ]
+      }
+    },
+    "Lean fresh, parallel": {
+      "ms": {
+        "build": 1164.0,
+        "union": 134.0,
+        "inter": 53.0,
+        "diff": 164.0
+      },
+      "matches_reference": true,
+      "answers": {
+        "build": [
+          3304811,
+          3303094
+        ],
+        "union": [
+          5308434,
+          22259684013108
+        ],
+        "inter": [
+          1299471,
+          5446574958600
+        ],
+        "diff": [
+          2005340,
+          8407855616662
+        ]
+      }
+    }
+  }
+}
